@@ -21,6 +21,47 @@
 
 \section{Bidding strategy}
 
+At the very start of each game, the agent immediately attempts to gain inventory by placing bids for 8 of each hotel room at a price of 10 each, and 1 of each type of entertainment at a price of 50 each. The agent does not perform any informed bidding for the first 30 seconds of the game, in order to allow the prices to settle and the price predictors to begin producing sensible estimates.
+
+Depending on the competitiveness of the hotel bidding environment, the optimiser might not settle on a strategy until very late in the game. For this reason, the agent is forbidden from placing any bids on flights or entertainment until the 4th minute, after the first 3 hotel auctions close. This prevents the agent from purchasing expensive flight tickets that it will not need, and also prevents it from selling entertainment tickets that it may need in the future.
+
+Bidding is performed on ``bid ticks'', which occur each time the last flight action's quote is updated (every 10 seconds). During a bid tick the agent updates its price estimates and runs the optimiser for a fixed duration (7 seconds) in order to pick the bidding strategy for that tick. Once a new strategy has been determined, the agent clears and replaces its allocations and places bids.
+
+\subsection{Flight bidding}
+
+In order to minimise costs, the agent attempts to purchase flights at their predicted minimum price rather than at a specific time. During each bid tick after the 4th minute, the agent will purchase required flight tickets if:
+
+\begin{itemize}
+  \item The ticket's current ask price is within 10 of its projected minimum, or
+  \item There are less than 30 seconds of the game remaining.
+\end{itemize}
+
+\subsection{Entertainment bidding}
+
+During each bid tick after the 4th minute, the agent will:
+
+\begin{itemize}
+  \item Place buy bids for required entertainment tickets at the current ask price, or 200, whichever is lower
+  \item Place sell bids for all owned but not required entertainment tickets at the current ask price - 10, or 60, whichever is higher
+\end{itemize}
+
+Entertainment tickets are never sold for less than 60 because the utility bonus that the purchaser would gain from the ticket is likely to be greater than the amount of profit our agent would make from the transaction, meaning that the transaction is likely to hurt our agent's position in the tournament rankings.
+
+In addition, the agent will attempt to sell entertainment tickets that it does not need \emph{or even own} for at least 200, since this amount is equal to the oversell penalty. In practice, very few agents purchase tickets for above 200 since such tickets provide no utility bonus, but this rule allows us to take advantage of poorly-designed or malfunctioning agents to improve our ranking.
+
+\subsection{Hotel bidding}
+
+During the final bid tick of each minute, the agent places hotel bids in the following manner for each hotel auction:
+
+\begin{itemize}
+  \item Let $HQW$ (\emph{hypothetical quantity won}) be the number of rooms the agent would have bought if the auction had closed at the end of the previous minute
+  \item Let $alloc$ be the number of rooms that we need
+  \item Place a bid for $alloc$ rooms at the predicted price + 50
+  \item If $alloc < HQW$, place a bid for $HQW - alloc$ hotel rooms at the current ask price + 1
+\end{itemize}
+
+By placing the lowest allowed bid for goods that the agent no longer needs, we maximise the possibility that another agent will purchase those goods, meaning we do not have to pay for them.
+
 \section{Performance}
 
 \end{document}
