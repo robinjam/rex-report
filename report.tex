@@ -94,6 +94,8 @@ During each bid tick after the 4th minute, the agent will:
   \item Place sell bids for all owned but not required entertainment tickets at the current ask price - 10, or 60, whichever is higher
 \end{itemize}
 
+During the practice games, a previous revision of our agent placed a bid for an alligator wrestling ticket for a price of over 9000 by mistake. In order to prevent this from happening again, we added a restriction that the agent will never bid more than 200 (the maximum possible utility bonus entertainment can provide) for each ticket, in addition to the restriction that the agent cannot bid when the projected score provided by the optimiser is below 0.
+
 Entertainment tickets are never sold for less than 60 because the utility bonus that the purchaser would gain from the ticket is likely to be greater than the amount of profit our agent would make from the transaction, meaning that the transaction is likely to hurt our agent's position in the tournament rankings.
 
 In addition, the agent will attempt to sell entertainment tickets that it does not need \emph{or even own} for at least 200, since this amount is equal to the oversell penalty. In practice, very few agents purchase tickets for above 200 since such tickets provide no utility bonus, but this rule allows us to take advantage of poorly-designed or malfunctioning agents to improve our ranking.
