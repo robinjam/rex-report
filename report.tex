@@ -50,7 +50,17 @@ Our flight price predictor attempts to estimate the expected minimum price of ea
 
 \subsection{Hotel price prediction}
 
+At the end of each minute, one open hotel auction closes at random. Because the hotel closures are truly random, there is no way to know which of the remaining auctions will close at the end of any given minute. For this reason, our hotel price predictor assumes that every hotel auction will close at the end of the current minute, and attempts to predict the closing price of each auction under that assumption.
+
+Our implementation relies on the fuzzy logic approach described in SouthamptonTAC \cite{SouthamptonTAC}. The price predictor contains a set of rules that attempt to predict the magnitude of the price changes based on factors such as the competitiveness of the marketplace, the price of the corresponding room at the other hotel on the same day, etc. The agent uses these calculated price deltas to estimate the closing price of each auction.
+
+The initial implementation of this fuzzy logic approach performed very poorly during testing due to a lack of historical data. Data from previous TAC competitions was available, but it was unlikely to be relevant to our class competition because the behaviour of the agents in a competitive environment is very different to those in a class tournament. Once calibrated with historical data obtained from practice games, the estimates became accurate enough to use for strategy optimisation.
+
 \subsection{Entertainment price prediction}
+
+We attempted to implement an entertainment price predictor using a similar fuzzy logic approach to the hotel price prediction. In practice, entertainment prices prove very difficult to predict due to the erratic behaviour of the market. The general trend is for agents that wish to sell entertainment tickets to undercut each other, driving the price down, until a unit is purchased and the price spikes upwards. These spikes happen essentially at random, hampering attempts to predict any meaningful values.
+
+After researching several agents from previous years' competitions, we found none that described a successful entertainment price prediction strategy, and several successful agents (such as SouthamptonTAC) explicitly mention that they perform no entertainment price prediction. We decided instead to simply use the current ask price instead of attempting to predict a minimum price.
 
 \section{Optimisation}
 
