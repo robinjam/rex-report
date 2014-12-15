@@ -7,7 +7,25 @@
 
 \maketitle
 
+\begin{abstract}
+  In this paper I describe our TAC Classic agent, \emph{Rex Ready}, that achieved second place in the 2014 COMP6203 class tournament. \emph{Rex Ready} relies on \emph{Bayesian updating} and \emph{fuzzy logic} to build a model of predicted market prices, and a \emph{hill-climbing optimiser} to select the optimum bidding strategy taking into account client preferences, and current market pricing and availability data.
+\end{abstract}
+
 \section{Introduction}
+
+Rex Ready is a TAC Classic agent implemented in Java. Due to space constraints, the TAC Classic ruleset will not be described in detail in this paper.
+
+Rex Ready consists of three main components:
+
+\begin{itemize}
+  \item A price prediction module, which attempts to predict:
+  \begin{itemize}
+    \item The minimum price that each flight ticket will reach between the current time and the end of the game and
+    \item The closing price of each hotel auction, under the assumption that they will all close at the end of the current minute,
+  \end{itemize}
+  \item An optimiser, which attempts to find a strategy that maximises the agent's score, and
+  \item A bidding component, which invokes the optimiser to select a strategy, and uses that strategy to place bids.
+\end{itemize}
 
 \section{Price prediction}
 
