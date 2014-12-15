@@ -113,4 +113,59 @@ By placing the lowest allowed bid for goods that the agent no longer needs, we m
 
 \section{Performance}
 
+During the practice games, our agent was run under the pseudonym ``ComeOnAndSlam''. Under this guise, Rex Ready managed to top the leaderboard with a mean score of 3251.56 across its nonzero games.
+
+During the tournament itself our agent fared similarly well, finishing in second place with an overall score of 3099.58 - just 210 points behind the leader, and more than 400 points ahead of the agent that finished in third place.
+
+Our agent was able to deal very well with poorly performing or malfunctioning agents, as well as games with highly competitive markets for hotel rooms, by considering every possible strategy rather than relying on simple heuristics.
+
+The flight price predictions proved to be surprisingly accurate (considering the prices follow a random walk), making it possible for the agent to obtain flight tickets for the cheapest possible amount. The hotel price predictions, although far less accurate than the flight predictions (perhaps due to the differences in bidding strategies between the agents in each game), proved sufficient to allow the optimiser to select strategies effectively.
+
+Attempting to predict the minimum price of entertainment tickets proved futile, because:
+
+\begin{itemize}
+  \item The agents in the competition had a very wide spread of entertainment bidding strategies, making it very difficult to predict prices from historical data, and
+  \item Although many agents paid sensible amounts for entertainment, a few always chose to bid at the current ask price (even if that price was above 200).
+\end{itemize}
+
+We therefore opted to simply use the current ask prices during the optimisation stage, instead of attempting to predict future prices. The agent was able to perform well in spite of this limitation.
+
+\subsection{Score analysis}
+
+\begin{table}
+  \caption{Table of scores}
+  \label{tab:scores}
+  \center
+  \begin{tabular}{ c | r r r }
+    Game & Utility & Cost    & Score   \\
+    \hline
+    614  & 5845    & 2785.96 & 3059.04 \\
+    617  & 8755    & 4070.32 & 4684.68 \\
+    618  & 10315   & 6438.42 & 3876.58 \\
+    622  & 10180   & 7278.55 & 2901.45 \\
+    624  & 8732    & 4295.10 & 4436.90 \\
+    630  & 7925    & 5806.98 & 2118.02 \\
+    631  & 7892    & 5085.70 & 2806.30 \\
+    634  & 8150    & 5429.91 & 2720.09 \\
+    639  & 8580    & 6312.76 & 2267.24 \\
+    640  & 8416    & 6766.44 & 1649.56 \\
+    641  & 7998    & 4285.68 & 3712.32 \\
+    645  & 8943    & 6816.13 & 2126.87 \\
+    647  & 7685    & 5170.85 & 2514.15 \\
+    652  & 8605    & 4388.50 & 4216.50 \\
+    654  & 9030    & 5348.05 & 3681.95 \\
+    655  & 8343    & 5521.44 & 2821.56 \\
+    \hline
+    Mean & 8462.13 & 5362.55 & 3099.58 \\
+    IQM  & 8447.38 & 5383.02 & 3027.11 \\
+    SD   & 1017.41 & 1203.13 &  904.17 \\
+  \end{tabular}
+\end{table}
+
+Table~\ref{tab:scores} shows the utility, cost, and overall score the agent achieved in each game it participated in. The mean, interquartile mean (\emph{IQM}) and standard deviation (\emph{SD}) are shown for each variable.
+
+As there are no obvious outliers in the dataset, the mean and IQM match fairly closely. The lower IQM of the score relative to the mean might be attributed to the fact 4 of the opposing agents in game 617 malfunctioned, artificially lowering the hotel and entertainment prices for that game and thereby inflating our score - the IQM does not include this game.
+
+The standard deviation for overall score is far lower than that of utility and cost due to the fact that the optimiser considers every possible strategy rather than simply choosing to minimise cost or maximise utility.
+
 \end{document}
