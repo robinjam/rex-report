@@ -6,6 +6,10 @@
 \usepackage{algorithm}
 \usepackage{algpseudocode}
 \usepackage{graphicx}
+\usepackage[backend=biber]{biblatex}
+
+\addbibresource{references.bib}
+\nocite{*}
 
 \newcommand{\Break}{\State \textbf{break}}
 
@@ -39,6 +43,10 @@ Rex Ready consists of three main components:
 \section{Price prediction}
 
 \subsection{Flight price prediction}
+
+Flight prices follow a random walk, in which the prices of each flight are perturbed every 10 seconds by an amount based on a random variable, unique to each flight, drawn uniformly from the interval \mbox{[-10, 30]}, that is never directly revealed to the agents.
+
+Our flight price predictor attempts to estimate the expected minimum price of each flight using Bayesian updating, in much the same way as Roxy\-Bot \cite{RoxyBot}. It constructs a probability distribution for the random variable, updating it each time the corresponding flight's price is updated, and samples this distribution to determine the most likely perturbation value after each future flight price update. In doing this, the agent is able to predict the lowest price that a flight will reach during the game to a reasonable degree of accuracy.
 
 \subsection{Hotel price prediction}
 
