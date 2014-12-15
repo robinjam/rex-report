@@ -74,7 +74,7 @@ At the very start of each game, the agent immediately attempts to gain inventory
 
 Depending on the competitiveness of the hotel bidding environment, the optimiser might not settle on a strategy until very late in the game. For this reason, the agent is forbidden from placing any bids on flights or entertainment until the 4th minute, after the first 3 hotel auctions close. This prevents the agent from purchasing expensive flight tickets that it will not need, and also prevents it from selling entertainment tickets that it may need in the future.
 
-Bidding is performed on ``bid ticks'', which occur each time the last flight action's quote is updated (every 10 seconds). During a bid tick the agent updates its price estimates and runs the optimiser for a fixed duration (7 seconds) in order to pick the bidding strategy for that tick. Once a new strategy has been determined, the agent clears and replaces its allocations and places bids.
+Bidding is performed on ``bid ticks'', which occur each time the last flight action's quote is updated (every 10 seconds). During a bid tick the agent updates its price estimates and runs the optimiser for a fixed duration (7 seconds) in order to pick the bidding strategy for that tick. Once a new strategy has been determined, the agent clears and replaces its allocations based on the requirements of the selected strategy. If the score projection provided by the optimiser is positive, then the agent will proceed to place bids as detailed below. If the score projection is zero or negative, the agent will skip the current bid tick in the hope that the optimiser will find a profitable strategy in a future bid tick.
 
 \subsection{Flight bidding}
 
