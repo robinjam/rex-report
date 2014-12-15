@@ -1,5 +1,6 @@
 \documentclass[a4paper]{proc}
 
+\usepackage{graphicx}
 \title{Rex Ready: A TAC Classic agent implementation}
 \author{\textbf{James Robinson}, Andrew Sullivan, Peter Prince}
 
@@ -36,6 +37,36 @@ Rex Ready consists of three main components:
 \subsection{Entertainment price prediction}
 
 \section{Optimisation}
+
+\subsection{Mutation rate}
+
+\begin{figure}
+  \includegraphics[width=\linewidth]{mutation_rate_1.pdf}
+  \caption{Time vs score for mutation rates in interval [0.1, 0.5]}
+  \label{fig:mutation_rate_1}
+\end{figure}
+
+\begin{figure}
+  \includegraphics[width=\linewidth]{mutation_rate_2.pdf}
+  \caption{Time vs score for mutation rates in interval [0.05, 0.2]}
+  \label{fig:mutation_rate_2}
+\end{figure}
+
+\begin{figure}
+  \includegraphics[width=\linewidth]{mutation_rate_3.pdf}
+  \caption{Time vs score for mutation rates in interval [0.01, 0.05]}
+  \label{fig:mutation_rate_3}
+\end{figure}
+
+Chosing a suitable mutation rate was critical to the performance of the agent, since the optimiser is only provided with a limited amount of time in which to find an optimal solution. In order to select a good mutation rate, the current predicted prices, availability, and owned goods were captured during a game in order to set up a realistic scenario in which to test the optimiser in isolation, and the optimiser was allowed to run for 10 seconds with various different mutation rates. Each mutation rate was tested 100 times in an attempt to smooth out random variations in performance.
+
+Figure~\ref{fig:mutation_rate_1} shows mutation rates in the interval [0.1, 0.5] in steps of 0.1. A mutation rate of 0.1 proved most effective in this test, reaching its highest score significantly faster than any other rate.
+
+Mutation rates in the interval [0.05, 0.2] in steps of 0.05 were then tested, and the results are shown in figure~\ref{fig:mutation_rate_2}. The optimal mutation rate in this second test was 0.05.
+
+A third and final test was performed with mutation rates in the interval [0.01, 0.1] in steps of 0.01 (illustrated in figure~\ref{fig:mutation_rate_3}), but the results were too noisy to draw any statistically significant conclusions.
+
+Based on these experiments, a mutation rate of 0.05 was selected for the optimiser.
 
 \section{Bidding strategy}
 
