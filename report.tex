@@ -188,15 +188,6 @@ Our agent was able to deal very well with poorly performing or malfunctioning ag
 
 The flight price predictions proved to be surprisingly accurate (considering the prices follow a random walk), making it possible for the agent to obtain flight tickets for the cheapest possible amount. The hotel price predictions, although far less accurate than the flight predictions (perhaps due to the differences in bidding strategies between the agents in each game), proved sufficient to allow the optimiser to select strategies effectively.
 
-Attempting to predict the minimum price of entertainment tickets proved futile, because:
-
-\begin{itemize}
-  \item The agents in the competition had a very wide spread of entertainment bidding strategies, making it very difficult to predict prices from historical data, and
-  \item Although many agents paid sensible amounts for entertainment, a few always chose to bid at the current ask price (even if that price was above 200).
-\end{itemize}
-
-We therefore opted to simply use the current ask prices during the optimisation stage, instead of attempting to predict future prices. The agent was able to perform well in spite of this limitation.
-
 \subsection{Score analysis}
 
 \begin{table}
