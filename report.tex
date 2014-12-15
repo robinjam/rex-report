@@ -1,6 +1,14 @@
 \documentclass[a4paper]{proc}
 
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{oz}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
 \usepackage{graphicx}
+
+\newcommand{\Break}{\State \textbf{break}}
+
 \title{Rex Ready: A TAC Classic agent implementation}
 \author{\textbf{James Robinson}, Andrew Sullivan, Peter Prince}
 
@@ -37,6 +45,43 @@ Rex Ready consists of three main components:
 \subsection{Entertainment price prediction}
 
 \section{Optimisation}
+
+\begin{algorithm}
+  \caption{Optimisation}
+  \label{alg:optimisation}
+  \begin{algorithmic}
+    \small
+    \State $CurrentStrategy \gets \Call{InitialStrategy}{}$
+
+    \Function{Optimise}{$Timeout$}
+      \State $StartTime \gets \Call{CurrentTime}{}$
+
+      \While{$\Call{CurrentTime}{} < StartTime + Timeout$}
+        \State $NewStrategy \gets CurrentStrategy$
+        \For{10 iterations}
+          \State $NewStrategy \gets \Call{Mutate}{NewStrategy}$
+          \If{$\Call{Score}{NewStrategy} > \Call{Score}{CurrentStrategy}$}
+            \State $CurrentStrategy \gets NewStrategy$
+            \Break
+          \EndIf
+        \EndFor
+      \EndWhile
+      \State \Return{CurrentStrategy}
+    \EndFunction
+  \end{algorithmic}
+\end{algorithm}
+
+Our agent's optimiser is implemented as a hill climber. Upon initialisation, the optimiser selects an initial strategy by simply constructing packages for each client matching their preferences. This strategy is rarely optimal, put provides a good starting point for successive improvement.
+
+Pseudocode for the optimiser is given in algorithm~\ref{alg:optimisation}. The \texttt{Optimise} function completes as many generations as it can before the timeout elapses. During each generation the current best strategy is mutated, and if the result has a higher score then it replaces the previous best. In order to prevent the optimiser from becoming stuck at local optima, it is allowed to perform up to 10 successive mutations per generation.
+
+The score function obtains a list of goods that will need to be purchased in order to complete a given strategy, calculates the total cost of those goods, and subtracts that from the sum of the utility values for all the packages within the strategy.
+
+A strategy is \emph{feasible} if all of the goods it requires are available. If a strategy is infeasible, a penalty of 10000 is applied to its score (simply awarding a score of 0 to any infeasible package creates ``cliffs'' in the objective function, which makes it very difficult for the optimiser to find the global maximum).
+
+The mutation operator for a strategy has a chance to remove or replace packages within the strategy. This allows the optimiser to consider strategies that do not provide packages for all 8 clients.
+
+The use of an optimiser (as opposed to bidding solely based on heuristics) makes the agent robust against other agents bidding illogically, unfortunate hotel closures, etc. It also allows the agent to consider the benefits of forgoing the utility bonuses that come from obeying client preferences in favour of reducing costs.
 
 \subsection{Mutation rate}
 
