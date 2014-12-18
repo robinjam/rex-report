@@ -224,6 +224,14 @@ As there are no obvious outliers in the dataset, the mean and IQM match fairly c
 
 The standard deviation for overall score is far lower than that of utility and cost due to the fact that the optimiser considers every possible strategy rather than simply choosing to minimise cost or maximise utility.
 
+\begin{figure}
+  \includegraphics[width=\linewidth]{score_box_plot.pdf}
+  \caption{Turkey box plot showing agent score distributions, sample means ($+$), and outliers ($\circ$); outliers for PostTraumaticAgent, NAMP and Agent.HN omitted for clarity}
+  \label{fig:score_box_plot}
+\end{figure}
+
+Figure~\ref{fig:score_box_plot} shows the score distributions for each agent. Note that although Rex Ready placed second in the tournament, both miniagent and TheGreaterFool finished with a higher median score - this may be due to improvements made to the agents by their respective teams over the course of the tournament. PostTraumaticAgent, NAMP and Agent.HN were each held back by some very low scores (not indicated on the chart for purposes of clarity), making it very difficult for them to rebound later in the game. Avengers skipped a number of games and thus both their median and first quartile scores are zero.
+
 \printbibliography
 
 \end{document}
