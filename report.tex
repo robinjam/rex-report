@@ -71,22 +71,22 @@ After researching several agents from previous years' competitions, we found non
   \label{alg:optimisation}
   \begin{algorithmic}
     \small
-    \State $CurrentStrategy \gets \Call{InitialStrategy}{}$
+    \State $BestStrategy \gets \Call{InitialStrategy}{}$
 
     \Function{Optimise}{$Timeout$}
       \State $StartTime \gets \Call{CurrentTime}{}$
 
       \While{$\Call{CurrentTime}{} < StartTime + Timeout$}
-        \State $NewStrategy \gets CurrentStrategy$
+        \State $NewStrategy \gets BestStrategy$
         \For{10 iterations}
           \State $NewStrategy \gets \Call{Mutate}{NewStrategy}$
-          \If{$\Call{Score}{NewStrategy} > \Call{Score}{CurrentStrategy}$}
-            \State $CurrentStrategy \gets NewStrategy$
+          \If{$\Call{Score}{NewStrategy} > \Call{Score}{BestStrategy}$}
+            \State $BestStrategy \gets NewStrategy$
             \Break
           \EndIf
         \EndFor
       \EndWhile
-      \State \Return{CurrentStrategy}
+      \State \Return{BestStrategy}
     \EndFunction
   \end{algorithmic}
 \end{algorithm}
