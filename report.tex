@@ -1,28 +1,29 @@
-\documentclass[a4paper]{proc}
+\documentclass{acm_proc_article-sp}
 
-\usepackage{amsfonts}
-\usepackage{amsmath}
 \usepackage{oz}
 \usepackage{algorithm}
 \usepackage{algpseudocode}
 \usepackage{graphicx}
-\usepackage[backend=biber]{biblatex}
-
-\addbibresource{references.bib}
-\nocite{*}
 
 \newcommand{\Break}{\State \textbf{break}}
 
-\title{Rex Ready: A TAC Classic agent implementation}
-\author{James Robinson\thanks{COMP6203 Group 10: Peter Prince, James Robinson, Andrew Sullivan}}
-
 \begin{document}
 
+\title{Rex Ready: A TAC Classic agent implementation}
+\numberofauthors{1}
+\author{
+  \alignauthor
+  James Robinson\\
+  \email{jr4e09@soton.ac.uk}
+}
+\date{8 January 2015}
 \maketitle
 
 \begin{abstract}
   In this paper I describe our TAC Classic agent, \emph{Rex Ready}, which achieved a second place finish in the 2014 COMP6203 class tournament. \emph{Rex Ready} relies on \emph{Bayesian updating} and \emph{fuzzy logic} to build a model of predicted market prices, and a \emph{hill-climbing optimiser} to select the optimum bidding strategy taking into account client preferences, predicted market prices, and availability data.
 \end{abstract}
+
+\keywords{intelligent agents, agent-based computing, TAC, bayesian updating, fuzzy logic, hill climbing, optimisation, trading}
 
 \section{Introduction}
 
@@ -48,7 +49,7 @@ Rex Ready might be described as a \emph{risk-averse} agent \cite{SouthamptonTAC}
 
 Flight prices follow a random walk, in which the prices of each flight are perturbed every 10 seconds by an amount based on a random variable, unique to each flight, drawn uniformly from the interval \mbox{[-10, 30]}, that is never directly revealed to the agents.
 
-Our flight price predictor estimates the expected minimum price of each flight using Bayesian updating, the same approach employed by RoxyBot-06 (\textcite{RoxyBot}), Walverine (\textcite{Walverine}) and Mertacor (\textcite{Mertacor}). The predictor constructs a probability distribution for the random variable, updating it each time the corresponding flight's price is updated, and samples this distribution to determine the most likely perturbation value after each future flight price update. In doing this, the agent is able to predict the lowest price that a flight will reach during the game to a reasonable degree of accuracy.
+Our flight price predictor estimates the expected minimum price of each flight using Bayesian updating, the same approach employed by RoxyBot-06 \cite{RoxyBot}, Walverine \cite{Walverine} and Mertacor \cite{Mertacor}. The predictor constructs a probability distribution for the random variable, updating it each time the corresponding flight's price is updated, and samples this distribution to determine the most likely perturbation value after each future flight price update. In doing this, the agent is able to predict the lowest price that a flight will reach during the game to a reasonable degree of accuracy.
 
 \subsection{Hotel price prediction}
 
@@ -232,6 +233,8 @@ The standard deviation for overall score is far lower than that of utility and c
 
 Figure~\ref{fig:score_box_plot} shows the score distributions for each agent. Note that although Rex Ready placed second in the tournament, both miniagent and TheGreaterFool finished with a higher median score - this may be due to improvements made to the agents by their respective teams over the course of the tournament. PostTraumaticAgent, NAMP and Agent.HN were each held back by some very low scores (not indicated on the chart for purposes of clarity), making it very difficult for them to rebound later in the game. Avengers skipped a number of games and thus both their median and first quartile scores are zero.
 
-\printbibliography
+\bibliographystyle{abbrv}
+\bibliography{references}
 
+\balancecolumns
 \end{document}
