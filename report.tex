@@ -41,7 +41,7 @@ Rex Ready consists of three main components:
   \item A bidding component, which invokes the optimiser to select a strategy, and uses that strategy to place bids.
 \end{itemize}
 
-Rex Ready might be described as a \emph{risk-averse} agent \cite{SouthamptonTAC}. Instead of selecting a strategy at the beginning of the game and bidding aggressively, it updates its clients' travel plans throughout the game based on current pricing information.
+Rex Ready might be described as a \emph{risk-averse} agent \cite{SouthamptonTAC}; instead of selecting a strategy at the beginning of the game and bidding aggressively, it updates its clients' travel plans throughout the game based on current pricing information.
 
 \section{Price prediction}
 
@@ -59,6 +59,8 @@ Our implementation relies on the fuzzy logic approach described in SouthamptonTA
 
 The initial implementation of this fuzzy logic approach performed very poorly during testing due to a lack of historical data. Data from previous TAC competitions was available, but it was unlikely to be relevant to our class competition because the behaviour of the agents in a competitive environment is very different to those in a class tournament. Once calibrated with historical data obtained from practice games, the estimates became accurate enough to use for strategy optimisation.
 
+\newpage
+
 \subsection{Entertainment price prediction}
 
 We attempted to implement an entertainment price predictor using a similar fuzzy logic approach to the hotel price prediction. In practice, entertainment prices prove very difficult to predict due to the erratic behaviour of the market. The general trend is for agents that wish to sell entertainment tickets to undercut each other, driving the price down, until a unit is purchased and the price spikes upwards. These spikes happen essentially at random, hampering attempts to predict any meaningful values.
@@ -67,7 +69,7 @@ After researching several agents from previous years' competitions, we found non
 
 \section{Optimisation}
 
-\begin{algorithm}
+\begin{algorithm}[b]
   \caption{Optimisation}
   \label{alg:optimisation}
   \begin{algorithmic}
@@ -106,24 +108,6 @@ The use of an optimiser (as opposed to bidding solely based on heuristics) makes
 
 \subsection{Mutation rate}
 
-\begin{figure}
-  \includegraphics[width=\linewidth]{mutation_rate_1.pdf}
-  \caption{Time vs score for mutation rates in interval [0.1, 0.5]}
-  \label{fig:mutation_rate_1}
-\end{figure}
-
-\begin{figure}
-  \includegraphics[width=\linewidth]{mutation_rate_2.pdf}
-  \caption{Time vs score for mutation rates in interval [0.05, 0.2]}
-  \label{fig:mutation_rate_2}
-\end{figure}
-
-\begin{figure}
-  \includegraphics[width=\linewidth]{mutation_rate_3.pdf}
-  \caption{Time vs score for mutation rates in interval [0.01, 0.05]}
-  \label{fig:mutation_rate_3}
-\end{figure}
-
 Chosing a suitable mutation rate was critical to the performance of the agent, since the optimiser is only provided with a limited amount of time in which to find an optimal solution. In order to select a good mutation rate, the current predicted prices, availability, and owned goods were captured during a game in order to set up a realistic scenario in which to test the optimiser in isolation, and the optimiser was allowed to run for 10 seconds with various different mutation rates. Each mutation rate was tested 100 times in an attempt to smooth out random variations in performance.
 
 Figure~\ref{fig:mutation_rate_1} shows mutation rates in the interval [0.1, 0.5] in steps of 0.1. A mutation rate of 0.1 proved most effective in this test, reaching its highest score significantly faster than any other rate.
@@ -133,6 +117,20 @@ Mutation rates in the interval [0.05, 0.2] in steps of 0.05 were then tested, an
 A third and final test was performed with mutation rates in the interval [0.01, 0.1] in steps of 0.01 (illustrated in figure~\ref{fig:mutation_rate_3}), but the results were too noisy to draw any statistically significant conclusions.
 
 Based on these experiments, a mutation rate of 0.05 was selected for the optimiser.
+
+\begin{figure}
+  \caption{Time vs score for mutation rates in interval [0.1, 0.5]}
+  \label{fig:mutation_rate_1}
+  \includegraphics[width=\linewidth]{mutation_rate_1.pdf}
+
+  \caption{Time vs score for mutation rates in interval [0.05, 0.2]}
+  \label{fig:mutation_rate_2}
+  \includegraphics[width=\linewidth]{mutation_rate_2.pdf}
+
+  \caption{Time vs score for mutation rates in interval [0.01, 0.05]}
+  \label{fig:mutation_rate_3}
+  \includegraphics[width=\linewidth]{mutation_rate_3.pdf}
+\end{figure}
 
 \section{Bidding strategy}
 
@@ -157,7 +155,7 @@ During each bid tick after the 4th minute, the agent will:
 
 \begin{itemize}
   \item Place buy bids for required entertainment tickets at the current ask price, or 200, whichever is lower
-  \item Place sell bids for all owned but not required entertainment tickets at the current ask price - 10, or 60, whichever is higher
+  \item Place sell bids for all owned but not required entertainment tickets at 10 below the current ask price, or 60, whichever is higher
 \end{itemize}
 
 Entertainment tickets are never sold for less than 60 because the utility bonus that the purchaser would gain from the ticket is likely to be greater than the amount of profit our agent would make from the transaction, meaning that the transaction is likely to hurt our agent's position in the tournament rankings.
@@ -219,17 +217,17 @@ The flight price predictions proved to be surprisingly accurate (considering the
   \end{tabular}
 \end{table}
 
-Table~\ref{tab:scores} shows the utility, cost, and overall score the agent achieved in each game it participated in. The mean, interquartile mean (\emph{IQM}) and standard deviation (\emph{SD}) are shown for each variable.
-
-As there are no obvious outliers in the dataset, the mean and IQM match fairly closely. The lower IQM of the score relative to the mean might be attributed to the fact 4 of the opposing agents in game 617 malfunctioned, artificially lowering the hotel and entertainment prices for that game and thereby inflating our score - the IQM does not include this game.
-
-The standard deviation for overall score is far lower than that of utility and cost due to the fact that the optimiser considers every possible strategy rather than simply choosing to minimise cost or maximise utility.
-
 \begin{figure}
   \includegraphics[width=\linewidth]{score_box_plot.pdf}
   \caption{Turkey box plot showing agent score distributions, sample means ($+$), and outliers ($\circ$); outliers for PostTraumaticAgent, NAMP and Agent.HN omitted for clarity}
   \label{fig:score_box_plot}
 \end{figure}
+
+Table~\ref{tab:scores} shows the utility, cost, and overall score the agent achieved in each game it participated in. The mean, interquartile mean (\emph{IQM}) and standard deviation (\emph{SD}) are shown for each variable.
+
+As there are no obvious outliers in the dataset, the mean and IQM match fairly closely. The lower IQM of the score relative to the mean might be attributed to the fact 4 of the opposing agents in game 617 malfunctioned, artificially lowering the hotel and entertainment prices for that game and thereby inflating our score - the IQM does not include this game.
+
+The standard deviation for overall score is far lower than that of utility and cost due to the fact that the optimiser considers every possible strategy rather than simply choosing to minimise cost or maximise utility.
 
 Figure~\ref{fig:score_box_plot} shows the score distributions for each agent. Note that although Rex Ready placed second in the tournament, both miniagent and TheGreaterFool finished with a higher median score - this may be due to improvements made to the agents by their respective teams over the course of the tournament. PostTraumaticAgent, NAMP and Agent.HN were each held back by some very low scores (not indicated on the chart for purposes of clarity), making it very difficult for them to rebound later in the game. Avengers skipped a number of games and thus both their median and first quartile scores are zero.
 
